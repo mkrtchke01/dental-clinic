@@ -35,7 +35,10 @@
   --grad: linear-gradient(120deg, var(--blue-500), var(--mint-500));
 
   --maxw: 1180px;
+}
 
+/* next/font provides --font-display and --font-body on <html>; these are fallbacks. */
+:root {
   --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
 }
@@ -286,13 +289,13 @@ h1, h2, h3, h4 {
 .ba-slider {
   position: relative; border-radius: var(--radius-lg); overflow: hidden;
   box-shadow: var(--shadow-lg); border: 6px solid #fff;
-  aspect-ratio: 4/3; user-select: none; cursor: ew-resize;
+  aspect-ratio: 4/3; user-select: none; cursor: ew-resize; touch-action: none;
 }
 .ba-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.ba-before-wrap { position: absolute; inset: 0; width: 50%; overflow: hidden; }
+.ba-before-wrap { position: absolute; inset: 0; overflow: hidden; }
 .ba-before-wrap img { width: 100vw; max-width: none; height: 100%; object-fit: cover; }
 .ba-handle {
-  position: absolute; top: 0; bottom: 0; left: 50%; width: 3px; background: #fff;
+  position: absolute; top: 0; bottom: 0; width: 3px; background: #fff;
   transform: translateX(-50%); display: grid; place-items: center; color: var(--blue-600);
 }
 .ba-handle::after {
@@ -372,7 +375,9 @@ h1, h2, h3, h4 {
 .faq-icon::before { width: 13px; height: 2.5px; transform: translate(-50%, -50%); }
 .faq-icon::after { width: 2.5px; height: 13px; transform: translate(-50%, -50%); }
 .faq-item.open .faq-icon::after { transform: translate(-50%, -50%) scaleY(0); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+.faq-item.open .faq-a { grid-template-rows: 1fr; }
+.faq-a-inner { overflow: hidden; }
 .faq-a p { padding: 0 24px 22px; color: var(--ink-500); }
 
 /* ===== Contact ===== */
@@ -429,6 +434,10 @@ h1, h2, h3, h4 {
 .footer-legal { display: flex; gap: 22px; }
 .footer-legal a:hover { color: #fff; }
 
+/* ===== Reveal animation ===== */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
 /* ===== Responsive ===== */
 @media (max-width: 980px) {
   .hero-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -473,4 +482,5 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
 }
